@@ -10,7 +10,7 @@ import errorHandlerDev from 'errorhandler';
 
 import { logger } from './utils/logger';
 import { getEnv } from './config/env';
-import { router as apiRoutes } from './routes';
+import { router as apiRoutes } from './routes/index';
 import { errorHandler } from './middleware/errorHandler';
 
 const NODE_ENV = getEnv('NODE_ENV', 'development');

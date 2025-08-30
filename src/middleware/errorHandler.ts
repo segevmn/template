@@ -9,7 +9,9 @@ export function errorHandler(
   next: NextFunction,
 ) {
   if (res.headersSent) return next(err);
-  logger.error(`${req.method} ${req.originalUrl} — ${err.message}`);
+  logger.error(
+    `${req.method} ${req.originalUrl} — ${err.message ?? 'Unknown Error'}`,
+  );
   const stat =
     (err as any)?.status ?? (err?.name === 'ValidationError' ? 400 : 500);
   res.status(stat).json({

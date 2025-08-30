@@ -9,7 +9,7 @@ type CacheEntry<T> = { value: T; expiresAt: number };
  * @returns A new function that caches results of the original function.
  */
 export function withCache<TArgs extends any[], TReturn>(
-  fn: (...args: TArgs) => Promise<TReturn>,
+  func: (...args: TArgs) => Promise<TReturn>,
   ttlSeconds: number,
 ) {
   const store = new Map<string, CacheEntry<TReturn>>();
@@ -18,7 +18,7 @@ export function withCache<TArgs extends any[], TReturn>(
     const now = Date.now();
     const cached = store.get(key);
     if (cached && cached.expiresAt > now) return cached.value;
-    const val = await fn(...args);
+    const val = await func(...args);
     store.set(key, { value: val, expiresAt: now + ttlSeconds * 1000 });
     return val;
   };

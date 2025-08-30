@@ -1,12 +1,17 @@
-import { Router } from 'express';
-import * as ctrl from '../controllers/userController';
+import { Schema, model, InferSchemaType } from 'mongoose';
 
-const router = Router();
+const userSchema = new Schema({
+  email: { type: String, required: true, unique: true },
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  role: {
+    type: String,
+    required: true,
+    enum: ['user', 'admin'],
+    default: 'user',
+  },
+});
 
-router.post('/', ctrl.createUser);
-router.get('/', ctrl.getUsers);
-router.get('/:id', ctrl.getUserById);
-router.put('/:id', ctrl.updateUser);
-router.delete('/:id', ctrl.deleteUser);
+export type User = InferSchemaType<typeof userSchema>;
 
-export default router;
+export const UserModel = model<User>('User', userSchema);
